@@ -1,0 +1,173 @@
+import requests
+import json
+import cv2
+#IBM Watson IOT Platform
+#pip install wiotp-sdk
+import wiotp.sdk.device
+import time
+import random
+
+import ibm_boto3
+from ibm_botocore.client import Config, ClientError
+
+# Constants for IBM COS values
+COS_ENDPOINT = "https://control.cloud-object-storage.cloud.ibm.com/v2/endpoints" # Current list avaiable at https://control.cloud-object-storage.cloud.ibm.com/v2/endpoints
+COS_API_KEY_ID = "Y5s_L8hhANasj2CVO0UOvIL4vB3TDD7Xn6-9stlOZRro" # eg "W00YixxxxxxxxxxMB-odB-2ySfTrFBIQQWanc--P3byk"
+COS_INSTANCE_CRN = "crn:v1:bluemix:public:cloud-object-storage:global:a/9c33106dcfdb4563b3ddfe27dd9783b7:4bffb96f-a051-4579-a6a2-569ae704b928::" # eg "crn:v1:bluemix:public:cloud-object-storage:global:a/3bf0d9003xxxxxxxxxx1c3e97696b71c:d6f04d83-6c4f-4a62-a165-696756d63903::"
+
+# Create resource
+cos = ibm_boto3.resource("s3",
+    ibm_api_key_id=COS_API_KEY_ID,
+    ibm_service_instance_id=COS_INSTANCE_CRN,
+    config=Config(signature_version="oauth"),
+    endpoint_url=COS_ENDPOINT
+)
+
+myConfig = { 
+    "identity": {
+        "orgId": "qf6r73",
+        "typeId": "smart_city",
+        "deviceId":"qf6r73"
+    },
+    "auth": {
+        "token": "AMctMQIK6CZH_z)fF?"
+    }
+}
+
+def myCommandCallback(cmd):
+    print("Message received from IBM IoT Platform: %s" % cmd.data['command'])
+    m=cmd.data['command']
+
+client = wiotp.sdk.device.DeviceClient(config=myConfig, logHandlers=None)
+client.connect()
+
+weatherData = requests.get('https://api.openweathermap.org/data/2.5/weather?q=London,%20GB&appid=7ad7e669362fcbc8a96a1f549a18473b')
+print(weatherData)
+a=weatherData.text
+b=json.loads(a)
+print(b)
+
+
+
+while True:
+    icon= b['weather'][0]['icon']
+    Description= b['weather'][0]['description']
+    print(Description)
+    print(icon)
+    if(icon=='01n'):
+        d=cv2.imread('01n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=70
+    if(icon=='02n'):
+        d=cv2.imread('02n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=70
+
+    if(icon=='03n'):
+        d=cv2.imread('03n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=70
+
+    if(icon=='04n'):
+        d=cv2.imread('04n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=50
+
+    if(icon=='09n'):
+        d=cv2.imread('09n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=40
+
+    if(icon=='10n'):
+        d=cv2.imread('10n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+
+    if(icon=='11n'):
+        d=cv2.imread('11n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=10
+
+
+    if(icon=='13n'):
+        d=cv2.imread('13n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+
+    if(icon=='50n'):
+        d=cv2.imread('50n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+
+    if(icon=='01d'):
+        d=cv2.imread('01d.jpg')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=70
+
+    if(icon=='02d'):
+        d=cv2.imread('02d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=70
+
+    if(icon=='03d'):
+        d=cv2.imread('03d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=70
+
+    if(icon=='04d'):
+        d=cv2.imread('04d.jpg')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=50
+
+    if(icon=='09d'):
+        d=cv2.imread('09d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=40
+
+    if(icon=='10d'):
+        d=cv2.imread('10d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+
+    if(icon=='11d'):
+        d=cv2.imread('11d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=10
+        
+    if(icon=='13d'):
+        d=cv2.imread('13d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+
+    if(icon=='50d'):
+        d=cv2.imread('50d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+    print(speed)
+    temp=random.randint(-20,125)
+    hum=random.randint(0,100)
+    myData={'temperature':temp, 'humidity':hum, 'speed':speed,'Description':Description,'icon':icon}
+    client.publishEvent(eventId="status", msgFormat="json", data=myData, qos=0, onPublish=None) 
+    print("Published data Successfully: %s", myData)
+    client.commandCallback = myCommandCallback
+    time.sleep(2) 
+
+client.disconnect()
