@@ -1,0 +1,208 @@
+msg.payload=msg.payload.humidity;
+global.set('h',msg.payload)
+return msg;
+
+
+msg.payload=msg.payload.temperature;
+global.set('t',msg.payload)
+return msg;
+
+
+msg.payload=msg.payload.speed;
+global.set('s',msg.payload)
+return msg;
+
+/// Description
+if(msg.payload.icon=='01d')
+{
+    msg.payload='<font size = 10>clear sky <i class="fa fa-sun-o" aria-hidden="true"></i>';
+    return msg;
+}
+
+else if(msg.payload.icon=='02d')
+{
+    msg.payload='<font size = 10>few clouds <i class="fa fa-cloud" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='03d')
+{
+    msg.payload='<font size = 10>scattered clouds <i class="fa fa-cloud" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='04d')
+{
+    msg.payload='<font size = 10>broken clouds <i class="fa fa-braille" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='09d')
+{
+    msg.payload='<font size = 10>shower rain <i class="fa fa-tint" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='10d')
+{
+    msg.payload='<font size = 10>rain <i class="fa fa-tint" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='11d')
+{
+    msg.payload='<font size = 10>thunderstorm <i class="fa fa-bolt" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='13d')
+{
+    msg.payload='<font size = 10>snow <i class="fa fa-snowflake-o" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='50d')
+{
+    msg.payload='<font size = 10>mist <i class="fa fa-bars" aria-hidden="true"></i>';
+    return msg;
+}
+if(msg.payload.icon=='01n')
+{
+    msg.payload='<font size = 10>clear sky <i class="fa fa-moon-o" aria-hidden="true"></i>';
+    return msg;
+}
+
+else if(msg.payload.icon=='02n')
+{
+    msg.payload='<font size = 10>few clouds <i class="fa fa-cloud" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='03n')
+{
+    msg.payload='<font size = 10>scattered clouds <i class="fa fa-cloud" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='04n')
+{
+    msg.payload='<font size = 10>broken clouds <i class="fa fa-braille" aria-hidden="true"></i> ';
+    return msg;
+}
+else if(msg.payload.icon=='09n')
+{
+    msg.payload='<font size = 10>shower rain <i class="fa fa-tint" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='10n')
+{
+    msg.payload='<font size = 10>rain <i class="fa fa-tint" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='11n')
+{
+    msg.payload=' <font size = 10>thunderstorm <i class="fa fa-bolt" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='13n')
+{
+    msg.payload='<font size = 10>snow <i class="fa fa-snowflake-o" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='50n')
+{
+    msg.payload='<font size = 10>mist <i class="fa fa-bars" aria-hidden="true"></i>';
+    return msg;
+}
+global.set('d',msg.payload)
+return null;
+
+/////FUNCTIONS
+if(msg.payload.icon=='01d')
+{
+    msg.payload='<font size = 5>Enjoy your drive';
+    return msg;
+}
+else if(msg.payload.icon=='02d')
+{
+    msg.payload='<font size = 5>Wear seat belt ';
+    return msg;
+}
+else if(msg.payload.icon=='03d')
+{
+    msg.payload='<font size = 5>Chill weather have a nice day ';
+    return msg;
+}
+else if(msg.payload.icon=='04d')
+{
+    msg.payload='<font size = 5>Have a nice day ';
+    return msg;
+}
+else if(msg.payload.icon=='09d')
+{
+    msg.payload='<font size = 5>Drive safe ';
+    return msg;
+}
+else if(msg.payload.icon=='10d')
+{
+    msg.payload='<font size = 5>Go slow ';
+    return msg;
+}
+else if(msg.payload.icon=='11d')
+{
+    msg.payload='<font size = 5>Careful the weather is not good ';
+    return msg;
+}
+else if(msg.payload.icon=='13d')
+{
+    msg.payload='<font size = 5>Enjoy the snow but go slow ';
+    return msg;
+}
+else if(msg.payload.icon=='50d')
+{
+    msg.payload='<font size = 5>Make sure your head light is on ';
+    return msg;
+}
+else if(msg.payload.icon=='01n')
+{
+    msg.payload='<font size = 5>Enjoy your drive ';
+    return msg;
+}
+else if(msg.payload.icon=='02n')
+{
+    msg.payload='<font size = 5>Wear seat belt';
+    return msg;
+}
+else if(msg.payload.icon=='03n')
+{
+    msg.payload='<font size = 5>Chill weather have a nice day ';
+    return msg;
+}
+else if(msg.payload.icon=='04n')
+{
+    msg.payload='<font size = 5>Make sure your head light is on ';
+    return msg;
+}
+else if(msg.payload.icon=='09n')
+{
+    msg.payload='<font size = 5>Drive safe';
+    return msg;
+}
+else if(msg.payload.icon=='10n')
+{
+    msg.payload='<font size = 5>Go slow';
+    return msg;
+}
+else if(msg.payload.icon=='11n')
+{
+    msg.payload='<font size = 5>Careful the weather is not good ';
+    return msg;
+}
+else if(msg.payload.icon=='13n')
+{
+    msg.payload='<font size = 5>Enjoy the snow but go slow ';
+    return msg;
+}
+else if(msg.payload.icon=='50n')
+{
+    msg.payload='<font size = 5>Make sure your head light is on ';
+    return msg;
+}
+
+return null;
+
+/////FUNCTION
+msg.payload=msg.payload.fun;
+global.set('f',msg.payload)
+return msg;
