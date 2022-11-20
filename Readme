@@ -1,0 +1,777 @@
+python program : 
+Get the link from the openwathermap by generatng the api key , hear we get the weather for vellore city tamil nadu 
+Conneting the program to the IBM cloud 
+Get the json value such as temperature, humidity, discribtion and the icon
+Based on the icon the the simple 'if' condition is expressed
+In mydata this value are feached
+
+
+
+import requests
+import json
+import cv2
+#IBM Watson IOT Platform
+#pip install wiotp-sdk
+import wiotp.sdk.device
+import time
+import random
+
+import ibm_boto3
+from ibm_botocore.client import Config, ClientError
+
+# Constants for IBM COS values
+COS_ENDPOINT = "https://control.cloud-object-storage.cloud.ibm.com/v2/endpoints" # Current list avaiable at https://control.cloud-object-storage.cloud.ibm.com/v2/endpoints
+COS_API_KEY_ID = "Y5s_L8hhANasj2CVO0UOvIL4vB3TDD7Xn6-9stlOZRro" # eg "W00YixxxxxxxxxxMB-odB-2ySfTrFBIQQWanc--P3byk"
+COS_INSTANCE_CRN = "crn:v1:bluemix:public:cloud-object-storage:global:a/9c33106dcfdb4563b3ddfe27dd9783b7:4bffb96f-a051-4579-a6a2-569ae704b928::" # eg "crn:v1:bluemix:public:cloud-object-storage:global:a/3bf0d9003xxxxxxxxxx1c3e97696b71c:d6f04d83-6c4f-4a62-a165-696756d63903::"
+
+# Create resource
+cos = ibm_boto3.resource("s3",
+    ibm_api_key_id=COS_API_KEY_ID,
+    ibm_service_instance_id=COS_INSTANCE_CRN,
+    config=Config(signature_version="oauth"),
+    endpoint_url=COS_ENDPOINT
+)
+
+myConfig = { 
+    "identity": {
+        "orgId": "qf6r73",
+        "typeId": "smart_city",
+        "deviceId":"qf6r73"
+    },
+    "auth": {
+        "token": "AMctMQIK6CZH_z)fF?"
+    }
+}
+
+def myCommandCallback(cmd):
+    print("Message received from IBM IoT Platform: %s" % cmd.data['command'])
+    m=cmd.data['command']
+    if(m=="HEAVY TRAFFIC"):
+        print("**///REQUEST 1///**")
+    else:
+        print("**///STARS///**")
+
+
+client = wiotp.sdk.device.DeviceClient(config=myConfig, logHandlers=None)
+client.connect()
+
+weatherData = requests.get('https://api.openweathermap.org/data/2.5/weather?q=Vellore,%20IN&appid=7ad7e669362fcbc8a96a1f549a18473b')
+print(weatherData)
+a=weatherData.text
+b=json.loads(a)
+print(b)
+
+
+
+while True:
+    icon= b['weather'][0]['icon']
+    Description= b['weather'][0]['description']
+    print(Description)
+    print(icon)
+    if(icon=='01n'):
+        d=cv2.imread('01n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=80
+        fun="Enjoy your drive"
+    if(icon=='02n'):
+        d=cv2.imread('02n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=70
+        fun="Wear seat belt"
+
+    if(icon=='03n'):
+        d=cv2.imread('03n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=70
+        fun="Chill weather have a nice day"
+    if(icon=='04n'):
+        d=cv2.imread('04n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=50
+        fun="Make sure your head light is on "
+    if(icon=='09n'):
+        d=cv2.imread('09n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=40
+        fun="Drive safe"
+
+    if(icon=='10n'):
+        d=cv2.imread('10n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+        fun="Go slow"
+    if(icon=='11n'):
+        d=cv2.imread('11n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=10
+        fun="Careful the weather is not good"
+
+
+    if(icon=='13n'):
+        d=cv2.imread('13n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+        fun="Enjoy the snow but go slow"
+    if(icon=='50n'):
+        d=cv2.imread('50n.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+        fun="Make sure your head light is on "
+
+    if(icon=='01d'):
+        d=cv2.imread('01d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=80
+        fun="Enjoy your drive"
+
+    if(icon=='02d'):
+        d=cv2.imread('02d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=70
+        fun="Wear seat belt"
+
+    if(icon=='03d'):
+        d=cv2.imread('03d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=70
+        fun="Chill weather have a nice day"
+
+    if(icon=='04d'):
+        d=cv2.imread('04d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=50
+        fun="Have nice day"
+    if(icon=='09d'):
+        d=cv2.imread('09d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=40
+        fun="Drive safe"
+
+
+    if(icon=='10d'):
+        d=cv2.imread('10d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+        fun="Go slow"
+
+    if(icon=='11d'):
+        d=cv2.imread('11d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=10
+        fun="Careful the weather is not good"
+
+    if(icon=='13d'):
+        d=cv2.imread('13d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+        fun="Enjoy the snow but go slow"
+
+    if(icon=='50d'):
+        d=cv2.imread('50d.png')
+        cv2.imshow('PhotoDisplay',d)
+        print(d)
+        speed=20
+        fun="Make sure your head light is on"
+    print(speed)
+    print(fun)
+    temp=random.randint(-20,125)
+    hum=random.randint(0,100)
+    myData={'temperature':temp, 'humidity':hum, 'speed':speed,'Description':Description,'fun':fun,'icon':icon}
+    client.publishEvent(eventId="status", msgFormat="json", data=myData, qos=0, onPublish=None) 
+    print("Published data Successfully: %s", myData)
+    client.commandCallback = myCommandCallback
+    time.sleep(2) 
+
+client.disconnect()
+
+
+In node red the function must contain the payload
+This are the program genrated for speed , humidity , temperature and discribtion 
+
+
+msg.payload=msg.payload.humidity;
+global.set('h',msg.payload)
+return msg;
+
+
+msg.payload=msg.payload.temperature;
+global.set('t',msg.payload)
+return msg;
+
+
+msg.payload=msg.payload.speed;
+global.set('s',msg.payload)
+return msg;
+
+/// Description
+if(msg.payload.icon=='01d')
+{
+    msg.payload='<font size = 10>clear sky <i class="fa fa-sun-o" aria-hidden="true"></i>';
+    return msg;
+}
+
+else if(msg.payload.icon=='02d')
+{
+    msg.payload='<font size = 10>few clouds <i class="fa fa-cloud" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='03d')
+{
+    msg.payload='<font size = 10>scattered clouds <i class="fa fa-cloud" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='04d')
+{
+    msg.payload='<font size = 10>broken clouds <i class="fa fa-braille" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='09d')
+{
+    msg.payload='<font size = 10>shower rain <i class="fa fa-tint" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='10d')
+{
+    msg.payload='<font size = 10>rain <i class="fa fa-tint" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='11d')
+{
+    msg.payload='<font size = 10>thunderstorm <i class="fa fa-bolt" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='13d')
+{
+    msg.payload='<font size = 10>snow <i class="fa fa-snowflake-o" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='50d')
+{
+    msg.payload='<font size = 10>mist <i class="fa fa-bars" aria-hidden="true"></i>';
+    return msg;
+}
+if(msg.payload.icon=='01n')
+{
+    msg.payload='<font size = 10>clear sky <i class="fa fa-moon-o" aria-hidden="true"></i>';
+    return msg;
+}
+
+else if(msg.payload.icon=='02n')
+{
+    msg.payload='<font size = 10>few clouds <i class="fa fa-cloud" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='03n')
+{
+    msg.payload='<font size = 10>scattered clouds <i class="fa fa-cloud" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='04n')
+{
+    msg.payload='<font size = 10>broken clouds <i class="fa fa-braille" aria-hidden="true"></i> ';
+    return msg;
+}
+else if(msg.payload.icon=='09n')
+{
+    msg.payload='<font size = 10>shower rain <i class="fa fa-tint" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='10n')
+{
+    msg.payload='<font size = 10>rain <i class="fa fa-tint" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='11n')
+{
+    msg.payload=' <font size = 10>thunderstorm <i class="fa fa-bolt" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='13n')
+{
+    msg.payload='<font size = 10>snow <i class="fa fa-snowflake-o" aria-hidden="true"></i>';
+    return msg;
+}
+else if(msg.payload.icon=='50n')
+{
+    msg.payload='<font size = 10>mist <i class="fa fa-bars" aria-hidden="true"></i>';
+    return msg;
+}
+global.set('d',msg.payload)
+return null;
+
+/////FUNCTIONS
+if(msg.payload.icon=='01d')
+{
+    msg.payload='<font size = 5>Enjoy your drive';
+    return msg;
+}
+else if(msg.payload.icon=='02d')
+{
+    msg.payload='<font size = 5>Wear seat belt ';
+    return msg;
+}
+else if(msg.payload.icon=='03d')
+{
+    msg.payload='<font size = 5>Chill weather have a nice day ';
+    return msg;
+}
+else if(msg.payload.icon=='04d')
+{
+    msg.payload='<font size = 5>Have a nice day ';
+    return msg;
+}
+else if(msg.payload.icon=='09d')
+{
+    msg.payload='<font size = 5>Drive safe ';
+    return msg;
+}
+else if(msg.payload.icon=='10d')
+{
+    msg.payload='<font size = 5>Go slow ';
+    return msg;
+}
+else if(msg.payload.icon=='11d')
+{
+    msg.payload='<font size = 5>Careful the weather is not good ';
+    return msg;
+}
+else if(msg.payload.icon=='13d')
+{
+    msg.payload='<font size = 5>Enjoy the snow but go slow ';
+    return msg;
+}
+else if(msg.payload.icon=='50d')
+{
+    msg.payload='<font size = 5>Make sure your head light is on ';
+    return msg;
+}
+else if(msg.payload.icon=='01n')
+{
+    msg.payload='<font size = 5>Enjoy your drive ';
+    return msg;
+}
+else if(msg.payload.icon=='02n')
+{
+    msg.payload='<font size = 5>Wear seat belt';
+    return msg;
+}
+else if(msg.payload.icon=='03n')
+{
+    msg.payload='<font size = 5>Chill weather have a nice day ';
+    return msg;
+}
+else if(msg.payload.icon=='04n')
+{
+    msg.payload='<font size = 5>Make sure your head light is on ';
+    return msg;
+}
+else if(msg.payload.icon=='09n')
+{
+    msg.payload='<font size = 5>Drive safe';
+    return msg;
+}
+else if(msg.payload.icon=='10n')
+{
+    msg.payload='<font size = 5>Go slow';
+    return msg;
+}
+else if(msg.payload.icon=='11n')
+{
+    msg.payload='<font size = 5>Careful the weather is not good ';
+    return msg;
+}
+else if(msg.payload.icon=='13n')
+{
+    msg.payload='<font size = 5>Enjoy the snow but go slow ';
+    return msg;
+}
+else if(msg.payload.icon=='50n')
+{
+    msg.payload='<font size = 5>Make sure your head light is on ';
+    return msg;
+}
+
+return null;
+
+/////FUNCTION
+msg.payload=msg.payload.fun;
+global.set('f',msg.payload)
+return msg;
+
+
+Command heavy traffic output genrated 
+/**
+   ESP32 + DHT22 Example for Wokwi
+
+   https://wokwi.com/arduino/projects/322410731508073042
+*/
+#include <WiFi.h>//library for wifi
+#include <PubSubClient.h>//library for MQtt 
+#include "DHTesp.h"
+#include <Adafruit_GFX.h>         // Core graphics library
+
+const int DHT_PIN = 15;
+#define DHTTYPE DHT11   // define type of sensor DHT 11
+#define LED 5
+DHTesp dhtSensor;
+
+void callback(char* subscribetopic, byte* payload, unsigned int payloadLength);
+
+//-------credentials of IBM Accounts------
+#define ORG "qf6r73"//IBM ORGANITION ID
+#define DEVICE_TYPE "smart_city"//Device type mentioned in ibm watson IOT Platform
+#define DEVICE_ID "qf6r73"//Device ID mentioned in ibm watson IOT Platform
+#define TOKEN "AMctMQIK6CZH_z)fF?"     //Token
+String data3;
+float h, t;
+
+
+//-------- Customise the above values --------
+char server[] = ORG ".messaging.internetofthings.ibmcloud.com";// Server Name
+char publishTopic[] = "iot-2/evt/Data/fmt/json";// topic name and type of event perform and format in which data to be send
+char subscribetopic[] = "iot-2/cmd/test/fmt/String";// cmd  REPRESENT command type AND COMMAND IS TEST OF FORMAT STRING
+char authMethod[] = "use-token-auth";// authentication method
+char token[] = TOKEN;
+char clientId[] = "d:" ORG ":" DEVICE_TYPE ":" DEVICE_ID;//client id
+
+//-----------------------------------------
+WiFiClient wifiClient; // creating the instance for wificlient
+PubSubClient client(server, 1883, callback ,wifiClient); //calling the predefined client id by passing parameter like server id,portand wificredential
+
+void setup() {
+  Serial.begin(115200);
+  dhtSensor.setup(DHT_PIN, DHTesp::DHT22);
+  pinMode(LED,OUTPUT);
+  delay(10);
+  Serial.println();
+  wificonnect();
+  mqttconnect();
+}
+
+void loop() {
+  TempAndHumidity  data = dhtSensor.getTempAndHumidity();
+
+  t = data.temperature;
+  h = data.humidity;
+
+  Serial.print("temperature:");
+  Serial.println(t);
+  Serial.print("Humidity:");
+  Serial.println(h);
+
+
+
+  PublishData(t, h);
+  delay(1000);
+  if (!client.loop()) {
+    mqttconnect();
+  }
+}
+
+/*.....................................retrieving to Cloud...............................*/
+
+void PublishData(float temp, float humid) {
+  mqttconnect();//function call for connecting to ibm
+  /*
+     creating the String in in form JSon to update the data to ibm cloud
+  */
+  String payload = "{\"temperature\":";
+  payload += temp;
+  payload += "," "\"humidity\":";
+  payload += humid;
+  payload += "}";
+
+
+  Serial.print("Sending payload: ");
+  Serial.println(payload);
+
+
+  if (client.publish(publishTopic, (char*) payload.c_str())) {
+    Serial.println("Publish ok");// if it sucessfully upload data on the cloud then it will print publish ok in Serial monitor or else it will print publish failed
+  } else {
+    Serial.println("Publish failed");
+  }
+
+}
+void mqttconnect() {
+  if (!client.connected()) {
+    Serial.print("Reconnecting client to ");
+    Serial.println(server);
+    while (!!!client.connect(clientId, authMethod, token)) {
+      Serial.print(".");
+      delay(500);
+    }
+
+  initManagedDevice();
+  Serial.println();
+  }
+}
+void wificonnect() //function defination for wificonnect
+{
+  Serial.println();
+  Serial.print("Connecting to ");
+
+  WiFi.begin("Wokwi-GUEST", "", 6);//passing the wifi credentials to establish the connection
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void initManagedDevice() {
+  if (client.subscribe(subscribetopic)) {
+    Serial.println((subscribetopic));
+    Serial.println("subscribe to cmd OK");
+
+  } 
+  else {
+    Serial.println("subscribe to cmd FAILED");
+  }
+}
+
+
+void callback(char* subscribetopic, byte* payload, unsigned int payloadLength)
+{
+
+  Serial.print("callback invoked for topic: ");
+  Serial.println(subscribetopic);
+  for (int i = 0; i < payloadLength; i++) {
+    Serial.print((char)payload[i]);
+    data3 += (char)payload[i];
+  }
+
+  Serial.println("data: "+ data3); 
+  if(data3=="HEAVY TRAFFIC")
+  {
+    Serial.println(data3);
+    digitalWrite(LED,HIGH);
+    Serial.println("on");
+ 
+  }
+
+  else 
+  {
+    Serial.println(data3);
+    digitalWrite(LED,LOW);
+    Serial.println("off");
+
+  }
+data3="";
+
+
+}
+
+
+
+hospital area
+https://wokwi.com/projects/348787237973918290
+
+
+#include <Adafruit_GFX.h>         // Core graphics library
+#include <Adafruit_ILI9341.h>     // Hardware-specific library
+#include <SdFat.h>                // SD card & FAT filesystem library
+#include <Adafruit_SPIFlash.h>    // SPI / QSPI flash library
+#include <Adafruit_ImageReader.h> // Image-reading functions
+
+// Comment out the next line to load from SPI/QSPI flash instead of SD card:
+#define USE_SD_CARD
+
+// TFT display and SD card share the hardware SPI interface, using
+// 'select' pins for each to identify the active device on the bus.
+
+#define SD_CS   4 // SD card select pin
+#define TFT_CS 10 // TFT select pin
+#define TFT_DC  8 // TFT display/command pin
+#define TFT_RST 9 // TFT reset pin
+
+#if defined(USE_SD_CARD)
+  SdFat                SD;         // SD card filesystem
+  Adafruit_ImageReader reader(SD); // Image-reader object, pass in SD filesys
+#else
+  // SPI or QSPI flash filesystem (i.e. CIRCUITPY drive)
+  #if defined(__SAMD51__) || defined(NRF52840_XXAA)
+    Adafruit_FlashTransport_QSPI flashTransport(PIN_QSPI_SCK, PIN_QSPI_CS,
+      PIN_QSPI_IO0, PIN_QSPI_IO1, PIN_QSPI_IO2, PIN_QSPI_IO3);
+  #else
+    #if (SPI_INTERFACES_COUNT == 1)
+      Adafruit_FlashTransport_SPI flashTransport(SS, &SPI);
+    #else
+      Adafruit_FlashTransport_SPI flashTransport(SS1, &SPI1);
+    #endif
+  #endif
+  Adafruit_SPIFlash    flash(&flashTransport);
+  FatFileSystem        filesys;
+  Adafruit_ImageReader reader(filesys); // Image-reader, pass in flash filesys
+#endif
+
+Adafruit_ILI9341     tft    = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
+Adafruit_Image       img;        // An image loaded into RAM
+int32_t              width  = 0, // BMP image dimensions
+                     height = 0;
+
+void setup(void) {
+
+  ImageReturnCode stat; // Status from image-reading functions
+
+  Serial.begin(9600);
+#if !defined(ESP32)
+  while(!Serial);       // Wait for Serial Monitor before continuing
+#endif
+
+  tft.begin();          // Initialize screen
+
+  // The Adafruit_ImageReader constructor call (above, before setup())
+  // accepts an uninitialized SdFat or FatFileSystem object. This MUST
+  // BE INITIALIZED before using any of the image reader functions!
+  Serial.print(F("Initializing filesystem..."));
+#if defined(USE_SD_CARD)
+  // SD card is pretty straightforward, a single call...
+  if(!SD.begin(SD_CS, SD_SCK_MHZ(25))) { // ESP32 requires 25 MHz limit
+    Serial.println(F("SD begin() failed"));
+    for(;;); // Fatal error, do not continue
+  }
+#else
+  // SPI or QSPI flash requires two steps, one to access the bare flash
+  // memory itself, then the second to access the filesystem within...
+  if(!flash.begin()) {
+    Serial.println(F("flash begin() failed"));
+    for(;;);
+  }
+  if(!filesys.begin(&flash)) {
+    Serial.println(F("filesys begin() failed"));
+    for(;;);
+  }
+#endif
+  Serial.println(F("OK!"));
+
+  // Fill screen blue. Not a required step, this just shows that we're
+  // successfully communicating with the screen.
+  //tft.fillScreen(ILI9341_BLUE);
+  tft.setRotation(3);
+  // Load full-screen BMP file 'pokedexscreen.bmp' at position (0,0) (top left).
+  // Notice the 'reader' object performs this, with 'tft' as an argument.
+  Serial.print(F("Loading hos.bmp to screen..."));
+  stat = reader.drawBMP("/hos.bmp", tft, 0, 0);
+  reader.printStatus(stat);   // How'd we do?
+  }
+
+void loop() {
+}
+
+
+
+schools area
+https://wokwi.com/projects/348787286426518100
+
+
+#include <Adafruit_GFX.h>         // Core graphics library
+#include <Adafruit_ILI9341.h>     // Hardware-specific library
+#include <SdFat.h>                // SD card & FAT filesystem library
+#include <Adafruit_SPIFlash.h>    // SPI / QSPI flash library
+#include <Adafruit_ImageReader.h> // Image-reading functions
+
+// Comment out the next line to load from SPI/QSPI flash instead of SD card:
+#define USE_SD_CARD
+
+// TFT display and SD card share the hardware SPI interface, using
+// 'select' pins for each to identify the active device on the bus.
+
+#define SD_CS   4 // SD card select pin
+#define TFT_CS 10 // TFT select pin
+#define TFT_DC  8 // TFT display/command pin
+#define TFT_RST 9 // TFT reset pin
+
+#if defined(USE_SD_CARD)
+  SdFat                SD;         // SD card filesystem
+  Adafruit_ImageReader reader(SD); // Image-reader object, pass in SD filesys
+#else
+  // SPI or QSPI flash filesystem (i.e. CIRCUITPY drive)
+  #if defined(__SAMD51__) || defined(NRF52840_XXAA)
+    Adafruit_FlashTransport_QSPI flashTransport(PIN_QSPI_SCK, PIN_QSPI_CS,
+      PIN_QSPI_IO0, PIN_QSPI_IO1, PIN_QSPI_IO2, PIN_QSPI_IO3);
+  #else
+    #if (SPI_INTERFACES_COUNT == 1)
+      Adafruit_FlashTransport_SPI flashTransport(SS, &SPI);
+    #else
+      Adafruit_FlashTransport_SPI flashTransport(SS1, &SPI1);
+    #endif
+  #endif
+  Adafruit_SPIFlash    flash(&flashTransport);
+  FatFileSystem        filesys;
+  Adafruit_ImageReader reader(filesys); // Image-reader, pass in flash filesys
+#endif
+
+Adafruit_ILI9341     tft    = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
+Adafruit_Image       img;        // An image loaded into RAM
+int32_t              width  = 0, // BMP image dimensions
+                     height = 0;
+
+void setup(void) {
+
+  ImageReturnCode stat; // Status from image-reading functions
+
+  Serial.begin(9600);
+#if !defined(ESP32)
+  while(!Serial);       // Wait for Serial Monitor before continuing
+#endif
+
+  tft.begin();          // Initialize screen
+
+  // The Adafruit_ImageReader constructor call (above, before setup())
+  // accepts an uninitialized SdFat or FatFileSystem object. This MUST
+  // BE INITIALIZED before using any of the image reader functions!
+  Serial.print(F("Initializing filesystem..."));
+#if defined(USE_SD_CARD)
+  // SD card is pretty straightforward, a single call...
+  if(!SD.begin(SD_CS, SD_SCK_MHZ(25))) { // ESP32 requires 25 MHz limit
+    Serial.println(F("SD begin() failed"));
+    for(;;); // Fatal error, do not continue
+  }
+#else
+  // SPI or QSPI flash requires two steps, one to access the bare flash
+  // memory itself, then the second to access the filesystem within...
+  if(!flash.begin()) {
+    Serial.println(F("flash begin() failed"));
+    for(;;);
+  }
+  if(!filesys.begin(&flash)) {
+    Serial.println(F("filesys begin() failed"));
+    for(;;);
+  }
+#endif
+  Serial.println(F("OK!"));
+
+  // Fill screen blue. Not a required step, this just shows that we're
+  // successfully communicating with the screen.
+  tft.fillScreen(ILI9341_BLUE);
+  tft.setRotation(3);
+  // Load full-screen BMP file 'pokedexscreen.bmp' at position (0,0) (top left).
+  // Notice the 'reader' object performs this, with 'tft' as an argument.
+  Serial.print(F("Loading sch.bmp to screen..."));
+  stat = reader.drawBMP("/sch.bmp", tft, 0, 0);
+  reader.printStatus(stat);   // How'd we do?
+  }
+
+void loop() {
+}
